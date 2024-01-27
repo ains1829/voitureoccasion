@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dev.config.JwtService;
 import com.dev.model.Note;
 import com.dev.model.user.User;
-import com.dev.service.FireBaseMessagingService;
 import com.dev.service.UserService;
-import com.google.firebase.messaging.FirebaseMessagingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +22,6 @@ public class UserController {
 
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
-    private final FireBaseMessagingService firebaseService;
     private final UserService userService;
 
     @PostMapping("/register")
@@ -36,16 +33,6 @@ public class UserController {
     @PostMapping("/authentication")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(authenticationService.authenticate(request));
-    }
-
-    @PostMapping("/notification")
-    public String sendNotification(@RequestBody Note note) {
-        try {
-            return firebaseService.sendNotification(note);
-        } catch (FirebaseMessagingException e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
     }
 
     @GetMapping("/findUserById")

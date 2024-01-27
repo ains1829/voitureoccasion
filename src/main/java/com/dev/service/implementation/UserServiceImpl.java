@@ -122,13 +122,13 @@ public class UserServiceImpl implements UserService{
         HashMap<Integer, UserMess> users=new HashMap<>();
         List<UserMess> result=new ArrayList<>();
         for(int i=0; i<userSendList.size(); i++) {
-            if(users.get(userSendList.get(i).getUserReceive().getId())==null) {
+            if(users.get(userSendList.get(i).getUserReceive().getId())==null&&userSendList.get(i).getUserReceive().getId()!=connected.getId()) {
                 users.put(userSendList.get(i).getUserReceive().getId(), userSendList.get(i).getUserReceive());
                 result.add(userSendList.get(i).getUserReceive());
             }
         }
         for(int i=0; i<userReceive.size(); i++) {
-            if(users.get(userReceive.get(i).getUserSend().getId())==null) {
+            if(users.get(userReceive.get(i).getUserSend().getId())==null&&userReceive.get(i).getUserSend().getId()!=connected.getId()) {
                 users.put(userReceive.get(i).getUserSend().getId(), userReceive.get(i).getUserSend());
                 result.add(userReceive.get(i).getUserSend());
             }
