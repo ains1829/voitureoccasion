@@ -1,5 +1,7 @@
 package com.dev.controller;
 
+import java.util.Hashtable;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +38,17 @@ public class UserController {
     }
 
     @GetMapping("/findUserById")
-    public User findUserById(@RequestParam int idUser) {
-        return userService.findById(idUser).get();
+    public Hashtable <String,Object> findUserById(@RequestParam int idUser) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            response.put("data", userService.findById(idUser).get());
+            response.put("status",200);
+            response.put("message","ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 }

@@ -20,34 +20,77 @@ public class CategorieController {
     private final CategorieService categorieService;
 
     @GetMapping(path = "/allCategorie", produces = "application/json")
-    public List<Categorie> getAllCategorie() {
-        System.out.println("nouvelle requete");
-        return categorieService.findAllCategorie();
+    public Hashtable <String,Object> getAllCategorie() {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            response.put("data", categorieService.findAllCategorie());
+            response.put("status",200);
+            response.put("message","ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @PostMapping("/insertCategorie")
-    public Categorie insertCategorie(@RequestBody Categorie Categorie) {
-        return categorieService.save(Categorie);
+    public Hashtable <String,Object> insertCategorie(@RequestBody Categorie categorie) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            categorieService.save(categorie);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/updateCategorie")
-    public Categorie updateCategorie(@RequestParam int idCategorie, @RequestParam String nomCategorie) {
-        return categorieService.update(idCategorie, nomCategorie);
+    public Hashtable <String,Object> updateCategorie(@RequestParam int idCategorie, @RequestParam String nomCategorie) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            categorieService.update(idCategorie, nomCategorie);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/deleteCategorie")
-    public void deleteCategorie(@RequestParam int idCategorie) {
-        System.out.println("Id categorie : "+idCategorie);
-        categorieService.delete(idCategorie);
+    public Hashtable <String,Object> deleteCategorie(@RequestParam int idCategorie) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            categorieService.delete(idCategorie);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/findCategorieById")
-    public Categorie findCategorieById(@RequestParam int idCategorie) {
+    public Hashtable <String,Object> findCategorieById(@RequestParam int idCategorie) {
+        Hashtable <String,Object> response=new Hashtable<>();
         try {
-            return categorieService.findById(idCategorie).get();
+            response.put("data", categorieService.findById(idCategorie).get());
+            response.put("status",200);
+            response.put("message","ok");
         } catch (Exception e) {
             e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
         }
-        return null;
+        return response;
     }
 }

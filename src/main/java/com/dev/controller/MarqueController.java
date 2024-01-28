@@ -22,34 +22,78 @@ public class MarqueController {
     private final MarqueService marqueService;
 
     @GetMapping(path = "/allMarque", produces = "application/json")
-    public List<Marque> getAllMarque() {
-        return marqueService.findAllMarque();
+    public Hashtable <String,Object> getAllMarque() {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            response.put("data", marqueService.findAllMarque());
+            response.put("status",200);
+            response.put("message","ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @PostMapping("/insertMarque")
-    public Marque insertMarque(@RequestBody Marque marque) {
-        return marqueService.save(marque);
+    public Hashtable <String,Object> insertMarque(@RequestBody Marque marque) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            marqueService.save(marque);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/updateMarque")
-    public Marque updateMarque(@RequestParam int idMarque, @RequestParam String nomMarque) {
-        System.out.println(idMarque+" "+nomMarque);
-        return marqueService.update(idMarque, nomMarque);
+    public Hashtable <String,Object> updateMarque(@RequestParam int idMarque, @RequestParam String nomMarque) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            marqueService.update(idMarque, nomMarque);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/deleteMarque")
-    public void deleteMarque(@RequestParam int idMarque) {
-        marqueService.delete(idMarque);
+    public Hashtable <String,Object> deleteMarque(@RequestParam int idMarque) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            marqueService.delete(idMarque);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     
     @GetMapping("/findMarqueById")
-    public Marque findMarqueById(@RequestParam int idMarque) {
+    public Hashtable <String,Object> findMarqueById(@RequestParam int idMarque) {
+        Hashtable <String,Object> response=new Hashtable<>();
         try {
-            return marqueService.findById(idMarque).get();
+            response.put("data", marqueService.findById(idMarque).get());
+            response.put("status",200);
+            response.put("message","ok");
         } catch (Exception e) {
             e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
         }
-        return null;
+        return response;
     }
 }

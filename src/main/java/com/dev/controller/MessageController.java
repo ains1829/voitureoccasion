@@ -2,6 +2,7 @@ package com.dev.controller;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -30,33 +31,58 @@ public class MessageController {
     private final JwtService jwtService;
 
     @PostMapping(path = "/envoyerMessage")
-    public Message envoyerMessage(@RequestHeader Map<String, String> headers, @RequestParam int idReceive, @RequestParam String contenu) throws Exception {
-        String email= jwtService.extractUserMail(headers.get("authorization").substring(7));
-        User userSend=userService.findByEmail(email).get();
-        User userReceive=userService.findById(idReceive).get();
-        return userService.envoyerMessage(userSend, userReceive, contenu, Timestamp.valueOf(LocalDateTime.now()));
+    public Hashtable <String,Object> envoyerMessage(@RequestHeader Map<String, String> headers, @RequestParam int idReceive, @RequestParam String contenu) throws Exception {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            String email= jwtService.extractUserMail(headers.get("authorization").substring(7));
+            User userSend=userService.findByEmail(email).get();
+            User userReceive=userService.findById(idReceive).get();
+            userService.envoyerMessage(userSend, userReceive, contenu, Timestamp.valueOf(LocalDateTime.now()));
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping(path = "/allMessage")
-    public Object getAllMessage(@RequestHeader Map<String, String> headers, @RequestParam int idReceive) 
+    public Hashtable <String,Object> getAllMessage(@RequestHeader Map<String, String> headers, @RequestParam int idReceive) 
     throws Exception {
+        Hashtable <String,Object> response=new Hashtable<>();
         try {
             String email= jwtService.extractUserMail(headers.get("authorization").substring(7));
             User userSend=userService.findByEmail(email).get();
             User userReceive=userService.findById(idReceive).get();
             System.out.println("users : "+userSend+" "+userReceive);
-            return userService.findByUserSendAndUserReceive(userSend, userReceive);
+            response.put("data", userService.findByUserSendAndUserReceive(userSend, userReceive));
+            response.put("status",200);
+            response.put("message","ok");
         } catch (Exception e) {
             e.printStackTrace();
-            return e;
+            response.put("status",500);
+            response.put("message",e.getMessage());
         }
+        return response;
     }
 
     @GetMapping(path = "/allUserDiscuss")
-    public List<UserMess> getAllPersonneDiscuss(@RequestHeader Map<String, String> headers) {
-        String email= jwtService.extractUserMail(headers.get("authorization").substring(7));
-        User user=userService.findByEmail(email).get();
-        System.out.println(user);
-        return userService.findDistinctUsersForUser(user);
+    public Hashtable <String,Object> getAllPersonneDiscuss(@RequestHeader Map<String, String> headers) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            String email= jwtService.extractUserMail(headers.get("authorization").substring(7));
+            User user=userService.findByEmail(email).get();
+            System.out.println(user);
+            response.put("data", userService.findDistinctUsersForUser(user));
+            response.put("status",200);
+            response.put("message","ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 }

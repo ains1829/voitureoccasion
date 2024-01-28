@@ -1,6 +1,7 @@
 package com.dev.controller;
 
 import java.sql.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,13 +25,33 @@ public class ModelController {
     private final ModelService modelService;
 
     @GetMapping(path = "/allModel", produces = "application/json")
-    public List<Model> getAllModel() {
-        return modelService.findAllModel();
+    public Hashtable <String,Object> getAllModel() {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            response.put("data", modelService.findAllModel());
+            response.put("status",200);
+            response.put("message","ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @PostMapping("/insertModel")
-    public Model insertModel(@RequestBody ModelGet modelGet) {
-        return modelService.save(modelGet);
+    public Hashtable <String,Object> insertModel(@RequestBody ModelGet modelGet) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            modelService.save(modelGet);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @PostMapping("/updateModel")
@@ -39,12 +60,32 @@ public class ModelController {
     }
 
     @GetMapping("/findModelById")
-    public Model findModelById(@RequestParam int idModel) {
-        return modelService.findModelById(idModel).get();
+    public Hashtable <String,Object> findModelById(@RequestParam int idModel) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            response.put("data", modelService.findModelById(idModel).get());
+            response.put("status",200);
+            response.put("message","ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/deleteModel")
-    public void deleteModel(@RequestParam int idModel) {
-        modelService.delete(idModel);
+    public Hashtable <String,Object> deleteModel(@RequestParam int idModel) {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            modelService.delete(idModel);
+            response.put("status",200);
+            response.put("message","success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
     }
 }
