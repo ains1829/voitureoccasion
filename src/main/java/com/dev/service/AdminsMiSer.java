@@ -3,7 +3,9 @@ package com.dev.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dev.model.user.Admin;
 import com.dev.models.AdminsMi;
+import com.dev.repository.AdminRepository;
 import com.dev.repository.AdminsMiRep;
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +14,17 @@ public class AdminsMiSer {
 
     @Autowired
     private AdminsMiRep annonceRepository;
+    @Autowired 
+    private AdminRepository adminRepository;
     
     public AdminsMi save(AdminsMi Annonce) {
         return annonceRepository.save(Annonce);
     }
+
+    // public Admin getCorrespondingAdmin(String mail, String pwd) {
+    //     // return 
+    // }
+
     public List<AdminsMi> getAll() {
         return annonceRepository.findAll();
     }

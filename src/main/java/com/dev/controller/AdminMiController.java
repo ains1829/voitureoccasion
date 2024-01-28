@@ -148,4 +148,19 @@ public class AdminMiController {
         }
         return response;
     }
+
+    @PostMapping("/logAdmin")
+    public Hashtable <String,Object> loginAdmin() {
+        Hashtable <String,Object> response=new Hashtable<>();
+        try {
+            // response.put("data", marqueService.findAllMarque());
+            response.put("status",200);
+            response.put("message","ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
+    }
 }

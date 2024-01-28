@@ -28,6 +28,10 @@ public class SecurityConfig {
             .csrf()
             .disable()
             .authorizeHttpRequests()
+            .requestMatchers("/api/statistic/**").permitAll() // gerer statistique
+            .requestMatchers("/signinlogin/**").permitAll() // gerer categorie
+            .requestMatchers("/api/user/**").permitAll() // pour login et inscription
+            .requestMatchers("/api/adminmir/**").permitAll() // admin pour gestion back offic
             .requestMatchers("/categorie/**").permitAll()
             .requestMatchers("/model/**").permitAll()
             .requestMatchers("/marque/**").permitAll()
