@@ -43,14 +43,16 @@ public class AnnoncedetailMi_vRep  {
     }
 
 
-    public AnnoncedetailMi_v getByIdannonce(int iduser,int idannonce) {
+    public AnnonceBodyMi getByIdannonce(int iduser,int idannonce) {
         String query="select ad_v.*, COALESCE(af.idannoncefavoris,0) as idannoncefavoris from annoncedetail_v as ad_v "+ 
         "left join annoncefavoris as af on (ad_v.idannonce=af.idannonce and af.iduser= "+iduser+") where ad_v.idannonce="+idannonce+" "+
         "order by ad_v.idannonce ASC,ad_v.idcategorie ASC,ad_v.idannoncephoto ASC,ad_v.dateannonce ASC ";
         List<AnnoncedetailMi_v> list=executerRequeteNative(query);
-        if(list==null){ return null; }
-        else if(list.isEmpty()==true){ return null; }
-        else{ return list.get(0); } 
+        List<AnnonceBodyMi> lstB=new AnnonceBodyMi().createListByListAnnoncedetailMi_v(list);
+        if(lstB==null){ return null; }
+        else if(lstB.isEmpty()==true){ return null; }
+        return lstB.get(0);
+
     }
 
 }

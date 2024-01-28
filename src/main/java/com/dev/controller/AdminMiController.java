@@ -171,7 +171,7 @@ public class AdminMiController {
     public Hashtable <String,Object> getDetailAnnonce( @RequestParam int iduser, @RequestParam int idannonce) {
         Hashtable <String,Object> response=new Hashtable<>(); 
         try{
-            AnnoncedetailMi_v a=annoncedetailMi_vSer.getByIdannonceByIduser(idannonce, iduser);
+            AnnonceBodyMi a=annoncedetailMi_vSer.getByIdannonceByIduser(idannonce, iduser);
             response.put("status",200);
             response.put("message","ok");
             if(a!=null){

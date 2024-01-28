@@ -2,6 +2,8 @@ package com.dev.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.dev.models.AnnonceBodyMi;
 import com.dev.models.AnnoncedetailMi_v;
 import com.dev.repository.AnnoncedetailMiPersoRep;
 import com.dev.repository.AnnoncedetailMi_vRep;
@@ -112,7 +114,7 @@ public class AnnoncedetailMi_vSer {
         return annoncedetaipersoRepository.getSearchEncours( suitequery);
     }
 
-    public AnnoncedetailMi_v getByIdannonceByIduser(int idannonce,int iduser)throws Exception{
+    public AnnonceBodyMi getByIdannonceByIduser(int idannonce,int iduser)throws Exception{
         return annonceRepository.getByIdannonce(iduser, idannonce);
     }
 }
