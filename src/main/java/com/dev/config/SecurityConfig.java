@@ -31,6 +31,7 @@ public class SecurityConfig {
             .requestMatchers("/categorie/**").permitAll()
             .requestMatchers("/model/**").permitAll()
             .requestMatchers("/marque/**").permitAll()
+            .requestMatchers("/transmission/**").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
             .anyRequest() //Toute autre 
             .authenticated()
