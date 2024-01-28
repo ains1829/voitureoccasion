@@ -184,4 +184,22 @@ public class AdminMiController {
         }
         return response;
     }
+
+    @GetMapping("getRegletauxCommission")
+    public Hashtable <String,Object> getRegletauxCommission( ) {
+        Hashtable <String,Object> response=new Hashtable<>(); 
+        try{
+            RegletauxMi regletauxMi=regletauxMiSer.getRegletauxMi_commission();
+            response.put("status",200);
+            response.put("message","ok");
+            if(regletauxMi!=null){
+                response.put("data",regletauxMi);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
+    }
 }
