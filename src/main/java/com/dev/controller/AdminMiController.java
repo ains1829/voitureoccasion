@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dev.body.*;
 import com.dev.exception.ExceptionCar;
 import com.dev.models.*;
+import com.dev.service.AdminsMiSer;
 import com.dev.service.AnnonceMiSer;
 import com.dev.service.AnnoncedetailMi_vSer;
 import com.dev.service.AnnoncefavorisMiSer;
@@ -33,6 +34,8 @@ public class AdminMiController {
     private AnnoncefavorisMiSer annoncefavorisMiSer;
     @Autowired
     private RegletauxMiSer regletauxMiSer;
+    @Autowired
+    private AdminsMiSer adminsMiSer;
 
     @GetMapping(path = "/hello" , produces = "application/json")
     public String getHello(){
@@ -150,13 +153,31 @@ public class AdminMiController {
     }
 
     @PostMapping("/logAdmin")
-    public Hashtable <String,Object> loginAdmin() {
+    public Hashtable <String,Object> loginAdmin(@RequestParam String mail, @RequestParam String pwd) {
         Hashtable <String,Object> response=new Hashtable<>();
         try {
-            // response.put("data", marqueService.findAllMarque());
+            response.put("data", adminsMiSer.getCorrespondingAdmin(mail, pwd));
             response.put("status",200);
             response.put("message","ok");
         } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status",500);
+            response.put("message",e.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("getDetailAnnonce")
+    public Hashtable <String,Object> getDetailAnnonce( @RequestParam int iduser, @RequestParam int idannonce) {
+        Hashtable <String,Object> response=new Hashtable<>(); 
+        try{
+            AnnoncedetailMi_v a=annoncedetailMi_vSer.getByIdannonceByIduser(idannonce, iduser);
+            response.put("status",200);
+            response.put("message","ok");
+            if(a!=null){
+                response.put("data",a);
+            }
+        }catch (Exception e){
             e.printStackTrace();
             response.put("status",500);
             response.put("message",e.getMessage());

@@ -28,7 +28,7 @@ public class Admin {
     String nomAdmin;
     @Column(name = "prenomadmin", nullable = false, columnDefinition = "VARCHAR(50)")
     String prenomAdmin;
-    @Column(name = "mail", nullable = false, columnDefinition = "VARCHAR(50)")
+    @Column(name = "mail", nullable = false, columnDefinition = "VARCHAR(50)", unique = true)
     String mail;
     @Column(name = "nee", nullable = false, columnDefinition = "DATE")
     Date nee;

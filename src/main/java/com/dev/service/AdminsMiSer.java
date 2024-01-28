@@ -21,9 +21,9 @@ public class AdminsMiSer {
         return annonceRepository.save(Annonce);
     }
 
-    // public Admin getCorrespondingAdmin(String mail, String pwd) {
-    //     // return 
-    // }
+    public Admin getCorrespondingAdmin(String mail, String pwd) {
+        return adminRepository.findByMailAndPwd(mail, pwd).get();
+    }
 
     public List<AdminsMi> getAll() {
         return annonceRepository.findAll();

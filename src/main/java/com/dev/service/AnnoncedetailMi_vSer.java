@@ -111,6 +111,10 @@ public class AnnoncedetailMi_vSer {
         String suitequery=createSuiteRequeteRechercher(word, idmarque, idmodel, idcarburant, nbplace, prix1, prix2, idcategories);
         return annoncedetaipersoRepository.getSearchEncours( suitequery);
     }
+
+    public AnnoncedetailMi_v getByIdannonceByIduser(int idannonce,int iduser)throws Exception{
+        return annonceRepository.getByIdannonce(iduser, idannonce);
+    }
 }
 
 //SELECT * FROM annonce WHERE TO_CHAR(dateannonce, 'YYYY-MM-DD') LIKE '%2024-01-23%';

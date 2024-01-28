@@ -4,8 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.dev.model.user.Admin;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
-    List<Admin> findByMailAndPwd(String mail, String pwd);
+    Optional<Admin> findByMailAndPwd(String mail, String pwd);
 }
