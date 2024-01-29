@@ -18,7 +18,7 @@ import com.dev.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/signinlogin")
 @RequiredArgsConstructor
 public class UserController {
 
