@@ -54,8 +54,9 @@ public class ImageService {
         return compressedImageData;
     }
     public MultipartFile compressImage(MultipartFile originalFile) throws IOException {
-        byte[] compressedBytes = compressBytes(originalFile.getBytes(),(((double)originalFile.getSize() )/(1024.0)),originalFile.getOriginalFilename());
-        return (MultipartFile)new CustomMultipartFile(compressedBytes, originalFile.getOriginalFilename());
+        // byte[] compressedBytes = compressBytes(originalFile.getBytes(),(((double)originalFile.getSize() )/(1024.0)),originalFile.getOriginalFilename());
+        // return (MultipartFile)new CustomMultipartFile(compressedBytes, originalFile.getOriginalFilename());
+        return originalFile;
     }
     public MultipartFile[] compressImage(MultipartFile[] multipartFiles)throws Exception{
         if(multipartFiles==null){ return null; }
