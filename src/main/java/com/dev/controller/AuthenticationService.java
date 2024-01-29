@@ -3,6 +3,8 @@ package com.dev.controller;
 import com.dev.model.user.Role;
 import com.dev.model.user.User;
 
+import java.sql.Date;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +33,7 @@ public class AuthenticationService {
             .prenom(request.getLastname())
             .mail(request.getMail())
             .motdepasse(passwordEncoder.encode(request.getPassword()))
+            .date(Date.valueOf(request.getDtn()))
             .role(Role.USER)
             .build();
         userRepository.save(user); 
