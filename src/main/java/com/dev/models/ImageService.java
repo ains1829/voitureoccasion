@@ -80,6 +80,7 @@ public class ImageService {
                 id1=strTemp.indexOf("\"url\":");
                 strTemp=strTemp.substring(id1+"\"url\":".length(), strTemp.length());
                 urlimages[i]=strTemp.substring(0,strTemp.indexOf(",")).replaceAll(" ","").replaceAll("\"","");
+                System.out.println("Path image " + urlimages[i]);
                 urlimages[i]=urlimages[i].replaceAll("\\", "/");
                 if(urlimages[i].contains(":400")==true){ throw new ExceptionCar("erreur upload photo"); }
                 // resultMap= objectMapper.readValue(imgBbResponses.get(i), new TypeReference<HashMap<String, Object>>(){});
