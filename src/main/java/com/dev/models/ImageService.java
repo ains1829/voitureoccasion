@@ -58,8 +58,12 @@ public class ImageService {
         // return (MultipartFile)new CustomMultipartFile(compressedBytes, originalFile.getOriginalFilename());
         return originalFile;
     }
+
     public MultipartFile[] compressImage(MultipartFile[] multipartFiles)throws Exception{
         if(multipartFiles==null){ return null; }
+        if(multipartFiles.length > 2){
+            throw new ExceptionCar("2 photo autorisée au maximum !");
+        }
         MultipartFile[] multipartFiles2=new MultipartFile[multipartFiles.length];
         System.out.println();
         for(int i=0;i<multipartFiles.length;i++){
