@@ -4,19 +4,19 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.exception.ExceptionCar;
@@ -60,15 +60,19 @@ public class ImageService {
     }
     public MultipartFile[] compressImage(MultipartFile[] multipartFiles)throws Exception{
         if(multipartFiles==null){ return null; }
-        MultipartFile[] multipartFiles2=new MultipartFile[multipartFiles.length];
-        System.out.println();
-        for(int i=0;i<multipartFiles.length;i++){
-            System.out.print(multipartFiles[i].getOriginalFilename()+": "+(((double)multipartFiles[i].getSize() )/(1024.0))+"ko et ");
-            multipartFiles2[i]=compressImage(multipartFiles[i]);
-            System.out.print(multipartFiles2[i].getOriginalFilename()+": "+(((double)multipartFiles2[i].getSize() )/(1024.0))+"ko\n");
-        }
-        return multipartFiles2;
+        // MultipartFile[] multipartFiles2=new MultipartFile[multipartFiles.length];
+        // System.out.println();
+        // for(int i=0;i<multipartFiles.length;i++){
+        //     System.out.print(multipartFiles[i].getOriginalFilename()+": "+(((double)multipartFiles[i].getSize() )/(1024.0))+"ko et ");
+        //     multipartFiles2[i]=compressImage(multipartFiles[i]);
+        //     System.out.print(multipartFiles2[i].getOriginalFilename()+": "+(((double)multipartFiles2[i].getSize() )/(1024.0))+"ko\n");
+        // }
+        return multipartFiles;
     }
+
+
+
+
 
     public String[] uploadAndGetLinksImage(MultipartFile[] files)throws Exception {
             String apiKey = "ca2d96c9ae967bb975557194bd8ec9e3";//<---- key le azon'la t@ alalan'le compte no-creern'ela t@ imagebb no atao eto,  
@@ -93,25 +97,50 @@ public class ImageService {
             return urlimages;
 
     }
-    private List<String> uploadImagesToImgBB(String apiKey, MultipartFile[] imageFiles) throws IOException {
-        HttpClient httpClient = HttpClients.createDefault();
-        List<String> imgBbResponses = Arrays.asList(new String[imageFiles.length]);
-        for (int i = 0; i < imageFiles.length; i++) {
-            MultipartFile file = imageFiles[i];
-            HttpPost httpPost = new HttpPost("https://api.imgbb.com/1/upload");
+    // private List<String> uploadImagesToImgBB2(String apiKey, MultipartFile[] imageFiles) throws IOException {
+    //     HttpClient httpClient = HttpClients.createDefault();
+    //     List<String> imgBbResponses = Arrays.asList(new String[imageFiles.length]);
+    //     for (int i = 0; i < imageFiles.length; i++) {
+    //         MultipartFile file = imageFiles[i];
+    //         HttpPost httpPost = new HttpPost("https://api.imgbb.com/1/upload");
 
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.addTextBody("key", apiKey);
-            builder.addBinaryBody("image", IOUtils.toByteArray(file.getInputStream()), ContentType.MULTIPART_FORM_DATA,
-                    file.getOriginalFilename());
+    //         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+    //         builder.addTextBody("key", apiKey);
+    //         builder.addBinaryBody("image", IOUtils.toByteArray(file.getInputStream()), ContentType.MULTIPART_FORM_DATA,
+    //                 file.getOriginalFilename());
 
-            HttpEntity multipartEntity = builder.build();
-            httpPost.setEntity(multipartEntity);
+    //         HttpEntity multipartEntity = builder.build();
+    //         httpPost.setEntity(multipartEntity);
 
-            HttpResponse response = httpClient.execute(httpPost);
+    //         HttpResponse response = httpClient.execute(httpPost);
 
-            // Extract and store the response body in the list
-            imgBbResponses.set(i, IOUtils.toString(response.getEntity().getContent(), "UTF-8"));
+    //         // Extract and store the response body in the list
+    //         imgBbResponses.set(i, IOUtils.toString(response.getEntity().getContent(), "UTF-8"));
+    //     }
+
+    //     return imgBbResponses;
+    // }
+
+    public List<String> uploadImagesToImgBB(String apiKey, MultipartFile[] imageFiles) throws IOException {
+        List<String> imgBbResponses = new ArrayList<>();
+
+        for (MultipartFile file : imageFiles) {
+            try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+                HttpPost httpPost = new HttpPost("https://api.imgbb.com/1/upload");
+
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.addTextBody("key", apiKey);
+                builder.addBinaryBody("image", file.getBytes(), ContentType.MULTIPART_FORM_DATA,
+                        file.getOriginalFilename());
+
+                httpPost.setEntity(builder.build());
+
+                try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                    // Extract and store the response body in the list
+                    String responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                    imgBbResponses.add(responseBody);
+                }
+            }
         }
 
         return imgBbResponses;
