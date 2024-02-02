@@ -1,0 +1,6 @@
+check_categorie 
+	Categorie : isChecked
+
+psql -h monorail.proxy.rlwy.net -p 31876 -d railway -U postgres
+
+password : EAfGF-GG*cb2dcg3daEe41Fge6DFF-6C

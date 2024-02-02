@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService{
         Query query = new Query(Criteria.where("userSend").is(connected));
         List<Message> userSendList = mongoTemplate.find(query, Message.class);
         Query query2 = new Query(Criteria.where("userReceive").is(connected));
-        List<Message> userReceive = mongoTemplate.find(query, Message.class);
+        List<Message> userReceive = mongoTemplate.find(query2, Message.class);
         HashMap<Integer, UserMess> users=new HashMap<>();
         List<UserMess> result=new ArrayList<>();
         for(int i=0; i<userSendList.size(); i++) {
